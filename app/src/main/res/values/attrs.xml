@@ -20,11 +20,6 @@
             <enum name="scrollable" value="11" />
         </attr>
         <attr name="tab_height" format="dimension"/>
-<!--        <attr name="tab_padding" format="dimension"/>
-        <attr name="tab_paddingStart" format="dimension"/>
-        <attr name="tab_paddingTop" format="dimension"/>
-        <attr name="tab_paddingEnd" format="dimension"/>
-        <attr name="tab_paddingBottom" format="dimension"/>-->
     </declare-styleable>
 
     <declare-styleable name="BaseCircleIndicator">

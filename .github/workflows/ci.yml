@@ -81,31 +81,10 @@ jobs:
           -x checkReleaseAarMetadata \
           -x checkKotlinGradlePluginConfigurationErrors \
           -x checkReleaseDuplicateClasses
-#        env:
-#          KEYSTORE_PATH: "../keystore.jks"
-#          KEYSTORE_PASSWORD: 123456
-#          KEY_ALIAS: 123456
-#          KEY_PASSWORD: 123456
-
-#      - name: Upload Artifacts
-#        uses: actions/upload-artifact@main
-#        # don't upload the artifacts if it's a pull request
-##        if: ${{ !github.event.pull_request }}
-#        with:
-#          path: './app/build/outputs/**/*.apk'
-#          name: build_output_${{ github.event.head_commit.id }}.zip
 
       - name: 获取当前时间
         id: current-time
         run: echo "formattedTime=$(date -u +%Y/%m/%d)" >> "$GITHUB_OUTPUT"
-
-#      - name: 上传
-#        uses: "marvinpinto/action-automatic-releases@latest"
-#        with:
-#          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-#          automatic_release_tag: "build_android_${{steps.current-time.outputs.formattedTime}}-${{ env.version_code }}"
-#          prerelease: true
-#          files: ./app/build/outputs/**/*.apk
 
       - name: Delete Pre-Release
         run: |

@@ -6,6 +6,9 @@ object EmojiUtils {
 
     val emojiMap: Map<String, Int> by lazy {
         mapOf(
+            Pair("[置顶]", R.drawable.ic_feed_top),
+            Pair("[楼主]", R.drawable.ic_author),
+            Pair("[层主]", R.drawable.ic_subauthor),
             Pair("[doge]", R.drawable.coolapk_emotion_37_doge),
             Pair("[doge原谅ta]", R.drawable.coolapk_emotion_58_dogeyuanliangta),
             Pair("[doge呵斥]", R.drawable.coolapk_emotion_57_dogehechi),
@@ -158,6 +161,7 @@ object EmojiUtils {
             Pair("[难过]", R.drawable.coolapk_emotion_46_nanguo),
             Pair("[黑线]", R.drawable.coolapk_emotion_43_heixian),
             Pair("[cos滑稽]", R.drawable.coolapk_emotion_65_coshuaji),
+            Pair("[图片]", R.drawable.ic_photo),
         )
     }
 }

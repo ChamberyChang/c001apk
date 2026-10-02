@@ -17,11 +17,6 @@
     *** get*();
 }
 
-# We want to keep methods in Activity that could be used in the XML attribute onClick.
-# -keepclassmembers class * extends android.app.Activity {
-#     public void *(android.view.View);
-# }
-
 # For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
 -keepclassmembers enum * {
     public static **[] values();
@@ -112,15 +107,7 @@
   void setStateInternal(int);
 }
 
-# MPAndroidChart
--keep public class com.github.mikephil.charting.animation.* {
-    public protected *;
-}
-
 # R8 full mode
-# Once
-#-keep,allowobfuscation,allowshrinking class jonathanfinerty.once.PersistedMap
-
 # ViewBinding
 -keep,allowobfuscation,allowshrinking class androidx.appcompat.app.AppCompatActivity
 -keep,allowobfuscation,allowshrinking class * extends androidx.appcompat.app.AppCompatActivity
@@ -133,9 +120,6 @@
 -keep,allowobfuscation,allowshrinking interface retrofit2.Call
 -keep,allowobfuscation,allowshrinking class retrofit2.Response
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
-
-# org.apache.commons:commons-compress
--keep,allowoptimization class org.apache.commons.compress.archivers.zip.**
 
 # Retrofit
 -dontnote retrofit2.Platform
@@ -182,9 +166,6 @@
 -dontwarn retrofit2.**
 -dontwarn org.codehaus.mojo.**
 -keep class retrofit2.** { *; }
--keepattributes Signature
--keepattributes Exceptions
--keepattributes *Annotation*
 -keepattributes RuntimeVisibleAnnotations
 -keepattributes RuntimeInvisibleAnnotations
 -keepattributes RuntimeVisibleParameterAnnotations

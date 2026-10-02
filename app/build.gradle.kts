@@ -157,8 +157,6 @@ configurations.configureEach {
 }
 
 dependencies {
-    androidTestImplementation(libs.androidx.ext.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     debugImplementation(libs.leakcanary.android)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
@@ -198,5 +196,4 @@ dependencies {
     implementation(libs.jbcrypt)
     implementation(libs.jsoup)
     implementation(libs.zhaobozhen.libraries.utils)
-    testImplementation(libs.junit)
 }
