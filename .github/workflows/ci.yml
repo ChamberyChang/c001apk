@@ -72,7 +72,7 @@ jobs:
       - name: Build with Gradle
         run: |
           ./gradlew :app:assembleRelease \
-          --build-cache --parallel \
+          --build-cache --parallel --stacktrace \
           -Pandroid.injected.build.abi=arm64-v8a \
           -x checkReleaseAarMetadata \
           -x checkKotlinGradlePluginConfigurationErrors \
