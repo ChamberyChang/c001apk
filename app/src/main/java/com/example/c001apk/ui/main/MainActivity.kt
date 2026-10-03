@@ -3,8 +3,8 @@ package com.example.c001apk.ui.main
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.InputType
-import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.LinearLayout
 
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -132,15 +132,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), IOnBottomClickContaine
     private fun showFirstLaunchPasswordDialog() {
         val passwordInput = com.google.android.material.textfield.TextInputEditText(this).apply {
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
             )
         }
         val passwordLayout = com.google.android.material.textfield.TextInputLayout(this).apply {
             hint = "密码"
             endIconMode = com.google.android.material.textfield.TextInputLayout.END_ICON_PASSWORD_TOGGLE
-            addView(passwordInput)
+            addView(passwordInput, LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ))
         }
 
         val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
