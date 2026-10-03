@@ -54,17 +54,26 @@ jobs:
             -x checkKotlinGradlePluginConfigurationErrors \
             -x checkReleaseDuplicateClasses
 
-      - name: Show produced APK files
+      - name: Discover APK outputs
+        id: apk_paths
+        shell: bash
         run: |
           echo "APK files under app/build/outputs:"
-          find app/build/outputs -type f -name "*.apk" -print
+          mapfile -t apk_files < <(find app/build/outputs -type f \( -iname "*.apk" -o -iname "*.aab" \) -print | sort)
+          if [ ${#apk_files[@]} -eq 0 ]; then
+            echo "No APK or AAB file was produced by the build."
+            exit 1
+          fi
+          printf '%s\n' "${apk_files[@]}" | tee /tmp/apk_paths.txt
+          echo "apk_paths<<EOF" >> "$GITHUB_ENV"
+          printf '%s\n' "${apk_files[@]}" >> "$GITHUB_ENV"
+          echo "EOF" >> "$GITHUB_ENV"
 
       - name: Upload APK as GitHub artifact
         uses: actions/upload-artifact@v4
         with:
           name: c001apk-${{ github.run_number }}
-          path: |
-            app/build/outputs/**/*.apk
+          path: ${{ env.apk_paths }}
           if-no-files-found: error
           retention-days: 14
 
@@ -74,5 +83,5 @@ jobs:
           tag_name: dist-${{ github.run_number }}
           name: c001apk-dist-${{ github.run_number }}
           files: |
-            app/build/outputs/**/*.apk
+            ${{ env.apk_paths }}
           generate_release_notes: true
