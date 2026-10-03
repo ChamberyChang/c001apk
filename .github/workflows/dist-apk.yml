@@ -1,0 +1,78 @@
+name: dist-apk
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-dist:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Configure Gradle for stable Android release builds
+        run: |
+          mkdir -p ~/.gradle
+          cat > ~/.gradle/gradle.properties <<'EOF'
+          org.gradle.parallel=false
+          org.gradle.daemon=false
+          org.gradle.jvmargs=-Xmx2g -Xms256m -XX:MaxMetaspaceSize=768m -Dfile.encoding=UTF-8
+          org.gradle.workers.max=1
+          kotlin.incremental=false
+          kotlin.compiler.execution.strategy=in-process
+          org.gradle.caching=true
+          org.gradle.configuration-cache=false
+          EOF
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build release APK
+        run: |
+          ./gradlew :app:assembleRelease \
+            --no-daemon --stacktrace --max-workers=1 \
+            -Dorg.gradle.jvmargs='-Xmx2g -Xms256m -XX:MaxMetaspaceSize=768m -Dfile.encoding=UTF-8' \
+            -Pandroid.injected.build.abi=arm64-v8a \
+            -x checkReleaseAarMetadata \
+            -x checkKotlinGradlePluginConfigurationErrors \
+            -x checkReleaseDuplicateClasses
+
+      - name: Show produced APK files
+        run: |
+          echo "APK files under app/build/outputs:"
+          find app/build/outputs -type f -name "*.apk" -print
+
+      - name: Upload APK as GitHub artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: c001apk-${{ github.run_number }}
+          path: |
+            app/build/outputs/**/*.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish APK as a GitHub Release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: dist-${{ github.run_number }}
+          name: c001apk-dist-${{ github.run_number }}
+          files: |
+            app/build/outputs/**/*.apk
+          generate_release_notes: true
